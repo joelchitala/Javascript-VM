@@ -1,0 +1,44 @@
+// Test setting and adding registers, and moving register data to memory;
+
+writableBytes[i++] = instructions.MOV_LIT_REG;
+writableBytes[i++] = 0x12;
+writableBytes[i++] = 0x34;
+writableBytes[i++] = R1;
+
+writableBytes[i++] = instructions.MOV_LIT_REG;
+writableBytes[i++] = 0xAB;
+writableBytes[i++] = 0xCD;
+writableBytes[i++] = R2;
+
+writableBytes[i++] = instructions.ADD_REG_REG;
+writableBytes[i++] = R1;
+writableBytes[i++] = R2;
+
+writableBytes[i++] = instructions.MOV_REG_MEM;
+writableBytes[i++] = ACC;
+writableBytes[i++] = 0x01;
+writableBytes[i++] = 0x00;
+
+
+
+
+//Running the cpu
+
+cpu.debug();
+cpu.viewMemoryAt(cpu.getRegister('ip'));
+cpu.viewMemoryAt(0x0100);
+
+const rl = readline.createInterface(
+    {
+        input: process.stdin,
+        output: process.stdout,
+    }
+);
+
+rl.on('line', () => {
+    cpu.step();
+    cpu.debug();
+    cpu.viewMemoryAt(cpu.getRegister('ip'));
+    cpu.viewMemoryAt(0x0100);
+})
+
