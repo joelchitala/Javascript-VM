@@ -11,3 +11,6 @@
 console.log((0x5000 & 0xff00) >> 8);
 console.log((0x5000 & 0xff00));
 // console.log((0x3000 & 0x00ff));
+
+console.log(~0x0000);
+
