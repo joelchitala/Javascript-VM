@@ -48,17 +48,58 @@ const writeCharToScreen = (char, command = 0x00, position) => {
 //     writeCharToScreen(char, index);
 // });
 
-writeCharToScreen(' ', 0xff, 0);
+// writeCharToScreen(' ', 0xff, 0);
 
-for (let index = 0; index <= 0xff; index++) {
-    const command = index % 2 === 0 ? 0x01 : 0x02;
-    writeCharToScreen('x', command, index);
-}
+// for (let index = 0; index <= 0xff; index++) {
+//     const command = index % 2 === 0 ? 0x01 : 0x02;
+//     writeCharToScreen('x', command, index);
+// }
+
+writableBytes[i++] = instructions.MOV_LIT_REG;
+writableBytes[i++] = 0x12;
+writableBytes[i++] = 0x34;
+writableBytes[i++] = R1;
+
+writableBytes[i++] = instructions.MOV_LIT_REG;
+writableBytes[i++] = 0xAB;
+writableBytes[i++] = 0xCD;
+writableBytes[i++] = R2;
+
+writableBytes[i++] = instructions.ADD_REG_REG;
+writableBytes[i++] = R1;
+writableBytes[i++] = R2;
+
+writableBytes[i++] = instructions.MOV_REG_MEM;
+writableBytes[i++] = ACC;
+writableBytes[i++] = 0x01;
+writableBytes[i++] = 0x00;
 
 
 writableBytes[i++] = instructions.HLT;
 
-cpu.run();
+// cpu.run();
+
+// cpu.debug();
+// cpu.viewMemoryAt(cpu.getRegister('ip'));
+// cpu.viewMemoryAt(0x0100);
+
+cpu.step();
+cpu.debug();
+// cpu.viewMemoryAt(cpu.getRegister('acc'));
+
+const rl = readline.createInterface(
+    {
+        input: process.stdin,
+        output: process.stdout,
+    }
+);
+
+rl.on('line', () => {
+    cpu.step();
+    cpu.debug();
+    cpu.viewMemoryAt(cpu.getRegister('acc'));
+    // cpu.viewMemoryAt(0x0100);
+})
 
 
 
